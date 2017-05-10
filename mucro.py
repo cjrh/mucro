@@ -30,13 +30,27 @@ def main(args: argparse.Namespace):
         os.path.abspath(args.pyfile)
     )
 
+    if not args.wrapper:
+        args.wrapper = os.path.splitext(
+            os.path.basename(
+                args.pyfile
+            )
+        )[0]
+
+    sym = os.path.join(os.path.abspath(args.bindir), args.wrapper)
+    if os.path.exists(sym):
+        raise EnvironmentError(
+            'Desired symlink already exists in "{}". Aborting'.format(
+                args.bindir
+            )
+        )
+
     with open(args.wrapper, 'w+') as f:
         f.write(contents)
         wrapper = os.path.abspath(args.wrapper)
     make_executable(wrapper)
-
-    sym = os.path.join(args.bindir, args.wrapper)
     os.symlink(wrapper, sym)
+
 
     uninstaller = os.path.abspath(args.wrapper + '-uninstall')
     with open(uninstaller, 'w+') as f:
@@ -54,8 +68,10 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         '--wrapper',
-        help='Name of the new shell script to be created.',
-        required=True
+        help=('Name of the new shell script to be created. If '
+              'not provided, the filename component of the --pyfile '
+              'option will be used, without the .py extension.'),
+        default=None
     )
     parser.add_argument(
         '--bindir',
