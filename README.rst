@@ -14,8 +14,11 @@ Imagine you have a python app ``blah.py``. This is what you do:
    (env) $ mucro --pyfile blah.py --bindir ~/bin
 
 This will create an executable in the dir: ``~/bin/blah``. Now you can call
-that executable from anywhere (it's on your ``$PATH`` right?).  And you don't
-have to active a virtualenv. You can even continue to hack on ``blah.py`` in
+that executable from anywhere (it's on your ``$PATH`` right?). That executable
+will use the virtualenv you activated when you ran the *mucro* command, so you 
+don't have to activate a virtualenv! 
+
+You can even continue to hack on ``blah.py`` in
 one shell (with your dev virtualenv activated), and run it inside another shell
 window in another path, with no virtualenv actived! YES!
 
