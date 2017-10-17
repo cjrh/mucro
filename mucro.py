@@ -4,13 +4,11 @@ Mucro
 """
 import argparse
 import os
-import sys
 import textwrap
 import shutil
-import stat
 
 
-__version__ = '2017.5.1'
+__version__ = '2017.10.1'
 
 
 def make_executable(path):
@@ -20,7 +18,7 @@ def make_executable(path):
     os.chmod(path, mode)
 
 
-def main(args: argparse.Namespace):
+def main(args):
     contents = textwrap.dedent('''\
     #!/usr/bin/env bash
     "{}" "{}" "$@"
@@ -50,7 +48,6 @@ def main(args: argparse.Namespace):
         wrapper = os.path.abspath(args.wrapper)
     make_executable(wrapper)
     os.symlink(wrapper, sym)
-
 
     uninstaller = os.path.abspath(args.wrapper + '-uninstall')
     with open(uninstaller, 'w+') as f:
